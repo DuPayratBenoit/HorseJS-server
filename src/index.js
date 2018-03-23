@@ -12,7 +12,7 @@ import requestId from './middlewares/requestId';
 import responseHandler from './middlewares/responseHandler';
 
 import publicRouter from './routes/publicRoutes';
-import securedRouter from './routes/secureRoutes';
+import securedRouter from './routes/securedRoutes';
 import swaggerWrapper from './utils/swagger-app-wrapper';
 
 const app = new Koa();

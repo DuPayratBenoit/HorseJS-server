@@ -18,6 +18,8 @@ const errorHandler = (ctx, next) =>
     }
   });
 
+const jwtErrorHandler = () => errorHandler;
+
 const issue = payload => jsonwebtoken.sign(payload, secret);
 
-export default { jwtInstance, errorHandler, issue };
+export default { jwtInstance, jwtErrorHandler, issue };

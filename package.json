@@ -13,12 +13,7 @@
         "type": "git",
         "url": "git+https://github.com/nawin9/EpiApi.git"
     },
-    "keywords": [
-        "node",
-        "mongodb",
-        "api",
-        "koa"
-    ],
+    "keywords": ["node", "mongodb", "api", "koa"],
     "author": {
         "name": "Nawin Kim",
         "email": "kim.nawin@gmail.com"
