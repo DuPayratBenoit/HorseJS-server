@@ -5,8 +5,12 @@ API server in Node + Koa + Mongodb
 ## Getting started
 
 Clone the project
+
 `git clone https://github.com/DuPayratBenoit/HorseJS-server`
+
 `cd HorseJS-server`
+
+**NOTE** Install and run a mongo server before starting the server.
 
 ## Useful commands
 
@@ -19,8 +23,7 @@ Clone the project
 
 ## Current routes
 
-The server is running at localhost:3000
-[Home](http://localhost:3000)
+The dev server is running at localhost:3000
 
 Register:
 [http://localhost:3000/register](http://localhost:3000/register)

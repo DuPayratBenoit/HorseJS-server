@@ -2,6 +2,8 @@ import Koa from 'koa';
 import BodyParser from 'koa-bodyparser';
 import Cors from 'kcors';
 import mongoose from 'mongoose';
+import socketIO from 'socket.io';
+import http from 'http';
 
 import config from './config';
 import apm from './apm';
@@ -14,6 +16,8 @@ import responseHandler from './middlewares/responseHandler';
 import publicRouter from './routes/publicRoutes';
 import securedRouter from './routes/securedRoutes';
 import swaggerWrapper from './utils/swagger-app-wrapper';
+
+import socket from './controllers/socket';
 
 const app = new Koa();
 
@@ -73,11 +77,20 @@ app.on('error', onError);
 
 // Start server
 if (!module.parent) {
-  const server = app.listen(config.port, config.host, () => {
-    logger.info({ event: 'execute' }, `API server listening on ${config.host}:${config.port}, in ${config.env}`);
-  });
-  server.on('error', onError);
+  app
+    .listen(config.port, config.host, () => {
+      logger.info({ event: 'execute' }, `API server is listening on ${config.host}:${config.port}, in ${config.env}`);
+    })
+    .on('error', onError);
 }
+
+// Socket IO
+const server = http.createServer(app.callback());
+const io = socketIO(server);
+socket.ioHandler(io);
+server.listen(3003, () => {
+  logger.info({ event: 'execute' }, 'Socket server is listening on localhost:3003');
+});
 
 // Expose app
 export default app;
