@@ -25,7 +25,7 @@ const options = {
   },
   // Path to the API specs
   apis: [
-    path.join(__dirname, '../controllers/**/*.js'),
+    path.join(__dirname, '../controllers/*.js'),
     path.join(__dirname, './definitions.yaml'),
     path.join(__dirname, './parameters.yaml'),
     path.join(__dirname, './responses.yaml'),

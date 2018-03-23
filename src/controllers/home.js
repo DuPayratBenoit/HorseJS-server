@@ -1,5 +1,4 @@
 import pkginfo from '../../package.json';
-import spec from '../spec';
 
 /**
  * @swagger
@@ -25,8 +24,4 @@ const welcome = ctx => {
   ctx.res.ok(data, 'Hello, API!');
 };
 
-const showSwaggerSpec = ctx => {
-  ctx.body = spec;
-};
-
-export default { welcome, showSwaggerSpec };
+export default { welcome };

@@ -1,8 +1,10 @@
 # EpiApi
 API server in Node
 
-# Installation
+## Installation
+npm install or
 yarn install
 
-# Runn the dev server
+## Run the dev server
+npm run dev or
 yarn dev

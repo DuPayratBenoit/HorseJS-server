@@ -1,16 +1,19 @@
 import Koa from 'koa';
 import BodyParser from 'koa-bodyparser';
 import Cors from 'kcors';
-import jwt from 'koa-jwt';
+import mongoose from 'mongoose';
 
 import config from './config';
 import apm from './apm';
+import logger from './logger';
 import errorHandler from './middlewares/errorHandler';
 import logMiddleware from './middlewares/log';
-import logger from './logger';
 import requestId from './middlewares/requestId';
 import responseHandler from './middlewares/responseHandler';
-import router from './routes';
+
+import publicRouter from './routes/publicRoutes';
+import securedRouter from './routes/secureRoutes';
+import swaggerWrapper from './utils/swagger-app-wrapper';
 
 const app = new Koa();
 
@@ -36,33 +39,34 @@ app.use(
 app.use(responseHandler());
 app.use(errorHandler());
 app.use(logMiddleware({ logger }));
+swaggerWrapper(app);
 
-// Middleware below this line is only reached if JWT token is valid
-app.use(jwt({ secret: 'shared-secret' }));
-// Unprotected middleware
-app.use((ctx, next) => {
-  if (ctx.url.match(/^\/public/)) {
-    ctx.body = 'unprotected\n';
-  } else {
-    return next();
-  }
+const connString = 'mongodb://localhost:27017/api';
+mongoose.connect(connString);
+mongoose.connection.on('connected', () => {
+  console.log(`Mongoose default connection open to ${connString}`);
 });
-
-// Protected middleware
-app.use(ctx => {
-  if (ctx.url.match(/^\/api/)) {
-    ctx.body = 'protected\n';
-  }
+mongoose.connection.on('error', err => {
+  console.log(`Mongoose default connection error: ${err}`);
+});
+mongoose.connection.on('disconnected', () => {
+  console.log('Mongoose default connection disconnected');
+});
+process.on('SIGINT', () => {
+  mongoose.connection.close(() => {
+    console.log('Mongoose default connection closed through app termination');
+    process.exit(0);
+  });
 });
 
 // Bootstrap application router
-app.use(router.routes());
-app.use(router.allowedMethods());
+app.use(publicRouter.routes()).use(publicRouter.allowedMethods());
+app.use(securedRouter.routes()).use(securedRouter.allowedMethods());
 
-function onError(err) {
+const onError = err => {
   if (apm.active) apm.captureError(err);
   logger.error({ err, event: 'error' }, 'Unhandled exception occured');
-}
+};
 
 // Handle uncaught errors
 app.on('error', onError);
