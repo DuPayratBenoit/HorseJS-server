@@ -6,11 +6,11 @@ API server in Node + Koa + Mongodb
 
 Clone the project
 
-`git clone https://github.com/DuPayratBenoit/HorseJS-server`
+`$git clone https://github.com/DuPayratBenoit/HorseJS-server`
 
-`cd HorseJS-server`
+`$cd HorseJS-server`
 
-**NOTE** Install and run a mongo server before starting the server.
+**NOTE:** Install and run a mongo server before starting the server.
 
 ## Useful commands
 
@@ -36,10 +36,11 @@ Swagger:
 
 ## TODOs
 
+*   [x] Start the project with koa
 *   [x] Connection with mongodb
 *   [x] Authentication with JWT
 *   [x] Swagger Doc
 *   [ ] Necessary routes
-*   [ ] Socket IO 2
+*   [x] Socket IO v2
 *   [ ] Dockerization
 *   [ ] Unit tests
